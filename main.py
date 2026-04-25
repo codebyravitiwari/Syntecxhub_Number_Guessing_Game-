@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-"""
-Number Guessing Game - Professional CLI Edition
-A polished terminal-based guessing game with difficulty levels, high score tracking,
-and robust input validation.
-"""
-
 import random
 import json
 import os
@@ -43,7 +36,7 @@ def display_welcome():
     print(BORDERS['top'])
     print(f"{BORDERS['side']:2}        🎯 NUMBER GUESSING GAME 🎯        {BORDERS['side']}")
     print(BORDERS['bottom'])
-    print(f"\\n{BORDERS['side']} I'm thinking of a number! Can you guess it?     {BORDERS['side']}")
+    print(f"{BORDERS['side']} I'm thinking of a number! Can you guess it?     {BORDERS['side']}")
     print(f"{BORDERS['side']:2} Use hints: TOO HIGH or TOO LOW!              {BORDERS['side']}")
     print(BORDERS['bottom'])
     print()
@@ -67,15 +60,15 @@ def select_difficulty() -> Optional[str]:
                 return ['easy', 'medium', 'hard'][int(choice) - 1]
             elif choice == '4':
                 display_high_scores()
-                input("\\nPress Enter to continue...")
+                input("\nPress Enter to continue...")
                 return None
             elif choice == '5':
                 print("Thanks for playing! 👋")
                 sys.exit(0)
             else:
-                print("\\n❌ Invalid choice. Please select 1-5.")
+                print("\n❌ Invalid choice. Please select 1-5.")
         except KeyboardInterrupt:
-            print("\\n\\nThanks for playing! 👋")
+            print("\n\nThanks for playing! 👋")
             sys.exit(0)
 
 def display_high_scores():
@@ -97,10 +90,10 @@ def validate_guess(guess_str: str, min_val: int, max_val: int) -> Optional[int]:
         if min_val <= guess <= max_val:
             return guess
         else:
-            print(f"\\n❌ Guess must be between {min_val} and {max_val}")
+            print(f"\n❌ Guess must be between {min_val} and {max_val}")
             return None
     except ValueError:
-        print("\\n❌ Please enter a valid number.")
+        print("\n❌ Please enter a valid number.")
         return None
 
 def get_rating(attempts: int, max_attempts: int) -> str:
@@ -118,9 +111,9 @@ def play_game(difficulty: str) -> Tuple[bool, int]:
     max_attempts = config['attempts']
     attempts = 0
 
-    print(f"\\n🎮 {difficulty.capitalize()} mode selected!")
+    print(f"\n🎮 {difficulty.capitalize()} mode selected!")
     print(f"Range: {config['min']} - {config['max']} | Max attempts: {max_attempts}")
-    print(f"Good luck! (Type 'quit' to exit anytime)\\n")
+    print(f"Good luck! (Type 'quit' to exit anytime)\n")
 
     while attempts < max_attempts:
         guess_str = input(f"Attempt {attempts + 1}/{max_attempts} - Your guess: ").strip().lower()
@@ -140,7 +133,7 @@ def play_game(difficulty: str) -> Tuple[bool, int]:
         elif guess > number:
             print("📉 Too HIGH!")
         else:
-            print(f"\\n🎉 CONGRATULATIONS! You got it in {attempts} attempts! 🎉")
+            print(f"\n🎉 CONGRATULATIONS! You got it in {attempts} attempts! 🎉")
             rating = get_rating(attempts, max_attempts)
             print(f"Rating: {rating} ({rating}! {'⭐' * (4 - min(3, attempts // 2))})")
             
@@ -149,9 +142,9 @@ def play_game(difficulty: str) -> Tuple[bool, int]:
             if attempts < scores.get(difficulty, float('inf')):
                 scores[difficulty] = attempts
                 save_scores(scores)
-                print("\\n🏆 New high score! 🎉")
+                print("\n🏆 New high score! 🎉")
             else:
-                print(f"\\nCurrent high score: {scores.get(difficulty, '---')} attempts")
+                print(f"\nCurrent high score: {scores.get(difficulty, '---')} attempts")
             
             return True, attempts
     
@@ -166,7 +159,8 @@ def load_scores() -> Dict[str, float]:
                 return {k: float(v) for k, v in json.load(f).items()}
         except (json.JSONDecodeError, ValueError):
             pass
-    # Initialize with infinity
+
+    
     return {diff: float('inf') for diff in DIFFICULTIES}
 
 def save_scores(scores: Dict[str, float]):
@@ -184,7 +178,7 @@ def main():
         difficulty = select_difficulty()
         if difficulty:
             won, attempts = play_game(difficulty)
-            print("\\n" + '='*50)
+            print("\n" + '='*50)
             replay = input("Play again? (y/n): ").strip().lower()
             if replay != 'y':
                 print("Thanks for playing! 👋")
@@ -194,5 +188,5 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        print("\\n\\nThanks for playing! 👋")
+        print("\n\nThanks for playing! 👋")
         sys.exit(0)
